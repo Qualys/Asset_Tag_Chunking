@@ -20,6 +20,7 @@ def get_assets(filter_tag: str):
     assets = []
 
     while more_records:
+        print("Grabbing records %d - %d" % (offset, offset+page_size))
         search_sr = QualysAssetTagging.createAssetSearchServiceRequest(tagname=filter_tag, page_size=page_size,
                                                                        offset=offset)
         call_resp = api.makeCall(url='%s%s' % (base_url, search_hostassets_uri), payload=search_sr, headers=headers,
