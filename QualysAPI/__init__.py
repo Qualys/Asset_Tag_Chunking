@@ -125,12 +125,20 @@ class QualysAPI:
 
         # Prepare the request for sending
         prepped_req = self.sess.prepare_request(r)
+
         # If the proxy is enabled, send via the proxy
-        if self.enableProxy:
-            resp = self.sess.send(prepped_req, proxies={'https': self.proxy})
-        # Otherwise send direct
-        else:
-            resp = self.sess.send(prepped_req)
+        try:
+            if self.enableProxy:
+                resp = self.sess.send(prepped_req, proxies={'https': self.proxy})
+            # Otherwise send direct
+            else:
+                resp = self.sess.send(prepped_req)
+        except ConnectionError:
+            print('QualysAPI.makeCall: ConnectionError exception caught, retrying')
+            if self.enableProxy:
+                resp = self.sess.send(prepped_req, proxies={'https': self.proxy})
+            else:
+                resp = self.sess.send(prepped_req)
 
         if self.debug:
             print("QualysAPI.makeCall: Request Headers")
