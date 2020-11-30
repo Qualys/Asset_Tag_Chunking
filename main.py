@@ -52,6 +52,7 @@ if __name__ == '__main__':
     root_tag_id = 0
     child_tag_prefix = ''
     page_size = 100
+    update_size = 200
 
     # Init API endpoint URIs
     search_hostassets_uri = '/qps/rest/2.0/search/am/hostasset'
@@ -265,14 +266,30 @@ if __name__ == '__main__':
                 print('Skipping Update for %s - tag was not created' % tag['name'])
             else:
                 print('Updating Host Assets: %s' % tag['name'])
-                # Update host assets to add this tag
-                update_sr = QualysAssetTagging.updateHostAssets()
-                update_sr['ServiceRequest']['filters']['Criteria'][0]['value'] = ",".join(tag['assets'])
-                update_sr['ServiceRequest']['data']['HostAsset']['tags']['add']['TagSimple']['id'] = int(tag['id'])
-                full_url = "%s%s" % (base_url, update_hostassets_uri)
-                resp = api.makeCall(url=full_url, payload=update_sr, headers=headers, json_body=True)
-                if resp['ServiceResponse']['responseCode'] == 'SUCCESS':
-                    print('%s Assets Updated: %s' % (tag['name'], resp['ServiceResponse']['count']))
-                else:
-                    print("ERROR: %s" % resp['ServiceResponse']['responseCode'])
-                    print("%s" % resp['ServiceResponse']['responseErrorDetails']['errorMessage'])
+
+                # Figure out how many API calls we need to make
+                call_count = int(int(tag['asset_count']) / update_size)
+                if (int(tag['asset_count']) % update_size) > 0:
+                    call_count += 1
+
+                # Start chunking the update calls, limiting each call to update_size
+                start = 0
+                for i in range(0, call_count):
+                    call_assets = tag['assets'][start:start+update_size]
+                    print('Updating %d assets' % len(call_assets))
+
+                    # Update chunk of host assets to add this tag
+                    update_sr = QualysAssetTagging.updateHostAssets()
+                    update_sr['ServiceRequest']['filters']['Criteria'][0]['value'] = ",".join(call_assets)
+                    update_sr['ServiceRequest']['data']['HostAsset']['tags']['add']['TagSimple']['id'] = int(tag['id'])
+                    full_url = "%s%s" % (base_url, update_hostassets_uri)
+                    resp = api.makeCall(url=full_url, payload=update_sr, headers=headers, json_body=True)
+                    if resp['ServiceResponse']['responseCode'] == 'SUCCESS':
+                        print('Assets Updated: %s' % resp['ServiceResponse']['count'])
+                    else:
+                        print("ERROR: %s" % resp['ServiceResponse']['responseCode'])
+                        print("%s" % resp['ServiceResponse']['responseErrorDetails']['errorMessage'])
+
+                    start += update_size
+
+                print('Update Complete: %s' % tag['name'])
