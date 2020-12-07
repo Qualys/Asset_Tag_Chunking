@@ -66,12 +66,12 @@ tags or update assets
 
 ```     
 $ python3 main.py -u USERNAME -p - --filter_tag 'Cloud Agent' --target_tag 'Chunked Assets' \
-        --limit_page_size 500 --child_tag_prefix 'CA' -m 1000 --delete_target_tag --proxy-enable  \
+        --limit_page_size 500 --child_tag_prefix 'ChildA' -m 1000 --delete_target_tag --proxy-enable  \
         --proxy-url 'https://proxy.internal' --simulate
 ```
 **OR**
 ```        
-$ python3 main.py -u USERNAME -p - -f 'Cloud Agent' -t 'Chunked Assets' -l 300 -c 'CA' -m 500 -D -P \
+$ python3 main.py -u USERNAME -p - -f 'Cloud Agent' -t 'Testing' -l 300 -c 'ChildA' -m 500 -D -P \
                 -U 'https://proxy.internal' -s
 ```
 
