@@ -89,7 +89,7 @@ Grabbing records 3001 - 3500
 Grabbing records 3501 - 4000
 Grabbing records 4001 - 4500
 Grabbing records 4501 - 5000
-Grabbing records 5000 - 5500
+Grabbing records 5000 - 6000
 Pulled 5,250 assets
 Calculated tags: 6
 SIMULATE: Creating Qualys Asset Tag: Testing
