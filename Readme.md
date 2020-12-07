@@ -2,8 +2,8 @@
 This script can be used to build and assign static tags to large numbers of Qualys assets.
 
 ## Requirements
-* Python 3.7
-* Requests library for Python 3
+- Python 3.7
+- Requests library for Python 3
 
 ## Password security
 For automation, passwords may be specified inline with the  `-p PASSWORD` argument.  For interactive use, passwords m
@@ -48,16 +48,16 @@ For automation, passwords may be specified inline with the  `-p PASSWORD` argume
 
 Example:
 
-* Create and assign tags for 5,250 assets
-* When pulling asset data, cap each call at 400 assets
-* Each tag should have no more than 500 assets assigned
-* Update assets which have the 'Cloud Agent' tag
-* Tags created should have a common parent named 'Chunked Assets'
-* Created tags should have a prefix of 'CA' so they are distinct from others created by the same script
-* The subscription is in the EU01 pod
-* Existing parent tag should be deleted if it exists
-* The connection to the Qualys API should be made through the proxy at 'https://proxy.internal'
-* Simulate this operation by downloading the asset list, calculating and assigning static tags but do not create asset
+- Create and assign tags for 5,250 assets
+- When pulling asset data, cap each call at 400 assets
+- Each tag should have no more than 500 assets assigned
+- Update assets which have the 'Cloud Agent' tag
+- Tags created should have a common parent named 'Chunked Assets'
+- Created tags should have a prefix of 'CA' so they are distinct from others created by the same script
+- The subscription is in the EU01 pod
+- Existing parent tag should be deleted if it exists
+- The connection to the Qualys API should be made through the proxy at 'https://proxy.internal'
+- Simulate this operation by downloading the asset list, calculating and assigning static tags but do not create asset
 tags or update assets
 
      
